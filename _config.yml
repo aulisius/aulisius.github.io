@@ -9,12 +9,12 @@ permalink:        pretty
 title:            Another blog
 tagline:          'A blog'
 description:      'A blog for when I am bored.'
-url:              https://faizaanceg.github.io
-baseurl:          https://faizaanceg.github.io/
+url:              https://aulisius.github.io
+baseurl:          https://aulisius.github.io/
 
 author:
   name:           'Faizaan'
-  url:            https://github.com/faizaanceg
+  url:            https://github.com/aulisius
 
 paginate:         5
 
@@ -22,4 +22,4 @@ paginate:         5
 version:          2.1.0
 
 github:
-  repo:           https://github.com/faizaanceg/faizaanceg.github.io
+  repo:           https://github.com/aulisius/aulisius.github.io
