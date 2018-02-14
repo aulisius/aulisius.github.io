@@ -9,7 +9,6 @@ class BlogIndex extends React.Component {
   render() {
     const siteTitle = get(this, 'props.data.site.siteMetadata.title')
     const posts = get(this, 'props.data.allMarkdownRemark.edges')
-    console.log(posts)
     return (
       <div>
         <Helmet>
@@ -19,6 +18,7 @@ class BlogIndex extends React.Component {
             content={get(this, 'props.data.site.siteMetadata.description')}
           />
         </Helmet>
+        {posts}
       </div>
     )
   }
@@ -35,6 +35,25 @@ export const pageQuery = graphql`
     site {
       siteMetadata {
         title
+      }
+    }
+    allMarkdownRemark {
+      edges {
+        node {
+          frontmatter {
+            title
+            date
+            path
+            _PARENT
+            parent
+          }
+          excerpt
+          id
+          timeToRead
+        }
+        next {
+          id
+        }
       }
     }
   }

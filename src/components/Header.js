@@ -8,7 +8,10 @@ const Header = props => (
     <div className="content">
       <div className="inner">
         <h1>Faizaan</h1>
-        <p>Software Engineer from India. Anime, Open Source and React &lt;3</p>
+        <p>
+          Software Engineer from India. Muslim. Anime, Open Source and
+          JavaScript <i className="icon fas fa-heart" />
+        </p>
       </div>
     </div>
     <nav>
