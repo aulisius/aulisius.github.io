@@ -1,0 +1,2 @@
+webpackJsonp([60335399758886],{124:function(t,a){t.exports={data:{site:{siteMetadata:{title:"@aulisius",description:"A place for my thoughts"}}},layoutContext:{}}}});
+//# sourceMappingURL=path----09bfe21b03d20bcc00f1.js.map
