@@ -10,8 +10,9 @@ const keyCode = {
 }
 
 class Main extends React.Component {
-  componentWillMount() {
-    window.addEventListener('keydown', this.closeArticleOnEsc)
+  componentDidMount() {
+    const isBrowser = typeof window !== undefined
+    isBrowser && window.addEventListener('keydown', this.closeArticleOnEsc)
   }
 
   closeArticleOnEsc = event => {
@@ -21,7 +22,8 @@ class Main extends React.Component {
   }
 
   componentWillUnmount() {
-    window.removeEventListener('keydown', this.closeArticleOnEsc)
+    const isBrowser = typeof window !== undefined
+    isBrowser && window.removeEventListener('keydown', this.closeArticleOnEsc)
   }
 
   render() {
