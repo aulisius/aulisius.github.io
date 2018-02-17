@@ -3,12 +3,9 @@ import Link from 'gatsby-link'
 import get from 'lodash/get'
 import Helmet from 'react-helmet'
 
-import pic01 from '../images/pic01.jpg'
-
 class BlogIndex extends React.Component {
   render() {
     const siteTitle = get(this, 'props.data.site.siteMetadata.title')
-    const posts = get(this, 'props.data.allMarkdownRemark.edges')
     return (
       <div>
         <Helmet>
@@ -35,25 +32,6 @@ export const pageQuery = graphql`
     site {
       siteMetadata {
         title
-      }
-    }
-    allMarkdownRemark {
-      edges {
-        node {
-          frontmatter {
-            title
-            date
-            path
-            _PARENT
-            parent
-          }
-          excerpt
-          id
-          timeToRead
-        }
-        next {
-          id
-        }
       }
     }
   }

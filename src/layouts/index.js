@@ -7,17 +7,12 @@ import Main from '../components/Main'
 import Footer from '../components/Footer'
 
 class Template extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      isArticleVisible: false,
-      timeout: false,
-      articleTimeout: false,
-      article: '',
-      loading: 'is-loading',
-    }
-    this.handleOpenArticle = this.handleOpenArticle.bind(this)
-    this.handleCloseArticle = this.handleCloseArticle.bind(this)
+  state = {
+    isArticleVisible: false,
+    timeout: false,
+    articleTimeout: false,
+    article: '',
+    loading: 'is-loading',
   }
 
   componentDidMount() {
@@ -32,7 +27,7 @@ class Template extends React.Component {
     }
   }
 
-  handleOpenArticle(article) {
+  handleOpenArticle = article => {
     this.setState({
       isArticleVisible: !this.state.isArticleVisible,
       article,
@@ -51,7 +46,7 @@ class Template extends React.Component {
     }, 350)
   }
 
-  handleCloseArticle() {
+  handleCloseArticle = () => {
     this.setState({
       articleTimeout: !this.state.articleTimeout,
     })
