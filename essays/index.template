@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Md Faizaan - TITLE</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../css/post.css">
+</head>
+
+<body>
+    <header>
+        <h2> <a href="../">Md Faizaan</a> </h2>
+        <aside>CAPTION</aside>
+        <br />
+        <i>PUBLISHING_INFO</i>
+    </header>
+    <hr />
+</body>
+
+</html>
