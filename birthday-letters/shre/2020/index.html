@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<head>
+  <link
+    href="https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900italic,900"
+    rel="stylesheet"
+    type="text/css"
+  />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link
+    rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
+    type="text/css"
+  />
+  <link
+    rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"
+    type="text/css"
+  />
+  <link
+    rel="stylesheet"
+    href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"
+    type="text/css"
+  />
+  <style>
+    @font-face {
+      font-family: spotify-circular;
+      src: url(https://open.scdn.co/cdn/fonts/CircularSpUIv3T-Bold.8d0a45cc.woff2)
+          format("woff2"),
+        url(https://open.scdn.co/cdn/fonts/CircularSpUIv3T-Bold.10e93738.woff)
+          format("woff"),
+        url(https://open.scdn.co/cdn/fonts/CircularSpUIv3T-Bold.7eb7d0f7.ttf)
+          format("truetype");
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+    body {
+      background: #181818;
+      font-family: "Roboto", sans-serif;
+    }
+    body a {
+      color: #aaaaaa;
+    }
+    body a:hover {
+      color: #c8c8c8;
+    }
+
+    .content {
+      display: flex;
+      flex-flow: row wrap;
+    }
+    .content__middle {
+      margin: 0 auto;
+      width: 70%;
+    }
+    @media (max-width: 768px) {
+      .content__middle {
+        width: 100%;
+      }
+    }
+
+    .playlist {
+      padding: 15px;
+      background: #282828;
+      border-top: 1px solid #181818;
+      border-bottom: 1px solid #181818;
+    }
+    .playlist:hover {
+      background: #424242;
+    }
+    .playlist:hover a {
+      color: white;
+    }
+    .playlist a {
+      color: #aaaaaa;
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+    }
+    .playlist a:hover {
+      text-decoration: none;
+    }
+    .playlist a i {
+      font-size: 24px;
+      color: white;
+      margin-right: 15px;
+    }
+
+    @media (max-width: 768px) {
+      .playlist {
+        display: none;
+      }
+    }
+    .current-track {
+      background: #282828;
+      padding: 5px 15px;
+      display: flex;
+      flex-flow: row wrap;
+      align-items: center;
+    }
+    .current-track__actions {
+      width: 5%;
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .current-track__actions a {
+      font-size: 24px;
+      color: #c8c8c8;
+    }
+    .current-track__actions a:hover {
+      color: white;
+      cursor: pointer;
+    }
+    .current-track__actions .play {
+      font-size: 36px;
+    }
+    .current-track__actions .pause {
+      font-size: 36px;
+    }
+    .current-track__progress {
+      width: 70%;
+      padding: 0 30px;
+      color: #aaaaaa;
+      font-size: 11px;
+      display: flex;
+      flex-flow: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .current-track__progress__bar {
+      width: 100%;
+      padding: 0 15px;
+    }
+    .current-track__progress__bar .noUi-target {
+      border: none;
+      height: 4px;
+    }
+    .current-track__progress__bar .noUi-base {
+      background: #1ed760;
+    }
+    .current-track__progress__bar .noUi-origin {
+      background: #5e5e5e;
+    }
+    .current-track__progress__bar .noUi-handle {
+      background: #c8c8c8;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      box-shadow: none;
+      border: none;
+      left: 0;
+      display: none;
+    }
+    .current-track__progress__bar .noUi-handle:before,
+    .current-track__progress__bar .noUi-handle:after {
+      background: none;
+    }
+    .current-track__progress:hover .noUi-handle {
+      display: block;
+    }
+    .current-track__options {
+      width: 25%;
+      display: flex;
+      flex-flow: row wrap;
+      align-items: center;
+    }
+    .current-track__options .lyrics {
+      font-size: 11px;
+      text-transform: uppercase;
+      width: 15%;
+      padding: 0 15px 0 0;
+    }
+    .current-track__options .controls {
+      width: 85%;
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: space-between;
+    }
+    .current-track__options .controls .devices:hover {
+      text-decoration: none;
+    }
+    .current-track__options .controls .devices i {
+      margin-right: 5px;
+    }
+    .current-track__options .controls .devices span {
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+    .current-track__options .controls .volume {
+      width: 25%;
+      display: flex;
+      flex-flow: row wrap;
+      align-items: center;
+    }
+    .current-track__options .controls .volume i {
+      width: 20px;
+      color: #aaaaaa;
+    }
+    .current-track__options .controls .volume #song-volume {
+      width: calc(80% - 20px);
+      border: none;
+      height: 4px;
+    }
+    .current-track__options .controls .volume #song-volume .noUi-base {
+      background: #c8c8c8;
+    }
+    .current-track__options .controls .volume #song-volume .noUi-origin {
+      background: #5e5e5e;
+    }
+    .current-track__options .controls .volume #song-volume .noUi-handle {
+      background: #c8c8c8;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      box-shadow: none;
+      border: none;
+      left: 0;
+      display: none;
+    }
+    .current-track__options .controls .volume #song-volume .noUi-handle:before,
+    .current-track__options .controls .volume #song-volume .noUi-handle:after {
+      background: none;
+    }
+    .current-track__options .controls .volume #song-volume:hover .noUi-handle {
+      display: block;
+    }
+
+    .volume > input[type="range"] {
+      -webkit-appearance: slider-vertical;
+      writing-mode: bt-lr;
+    }
+    @media (max-width: 1400px) {
+      .current-track__actions {
+        width: 10%;
+      }
+      .current-track__progress {
+        width: 50%;
+      }
+      .current-track__options {
+        width: 40%;
+      }
+    }
+    @media (max-width: 980px) {
+      .current-track__actions {
+        width: 10%;
+      }
+      .current-track__progress {
+        width: 40%;
+      }
+      .current-track__options {
+        width: 50%;
+      }
+    }
+    @media (max-width: 768px) {
+      .current-track__actions {
+        width: 25%;
+      }
+      .current-track__progress {
+        width: 75%;
+      }
+      .current-track__options {
+        width: 100%;
+      }
+    }
+    @media (max-width: 480px) {
+      .current-track__actions {
+        width: 100%;
+        justify-content: space-around;
+        padding: 5px 0;
+      }
+      .current-track__progress {
+        width: 100%;
+        padding: 5px 0;
+      }
+      .current-track__options {
+        width: 100%;
+        padding: 5px 0;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .current-track__action {
+        padding-top: 15px;
+      }
+    }
+    .artist {
+      height: 617px;
+      overflow-y: scroll;
+    }
+    .artist__header {
+      height: 320px;
+      border-bottom: 1px solid #282828;
+      position: relative;
+      background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/7022/spotify_img_bground.png);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      overflow: hidden;
+      z-index: 1;
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    .artist__header:before {
+      content: " ";
+      display: block;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      opacity: 0.15;
+      background-image: url(2020/shre_cover_art.jpg);
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: top;
+    }
+    @media (min-width: 768px) {
+      .artist__header:before {
+        background-position-y: -110px;
+      }
+    }
+    .artist__header .artist__info {
+      padding: 15px;
+      z-index: 1;
+      width: 80%;
+      margin-top: 78px;
+      display: flex;
+      flex-flow: row wrap;
+      align-items: flex-end;
+    }
+    .artist__header .artist__info__name {
+      font-family: spotify-circular;
+      color: white;
+      font-size: 36px;
+      font-weight: 100;
+      padding: 0 0 10px 0;
+    }
+    .artist__header .artist__info__actions {
+      display: flex;
+      flex-flow: row wrap;
+    }
+    .artist__header .artist__info__actions button {
+      margin-right: 10px;
+      height: 27px;
+      display: flex;
+      flex-flow: row wrap;
+      align-items: center;
+      padding: 0 15px;
+      font-weight: 500;
+    }
+    .artist__header .artist__info__actions button i {
+      font-size: 20px;
+      margin-right: 5px;
+    }
+    .artist__header .artist__listeners {
+      width: 20%;
+      z-index: 1;
+      padding: 15px;
+      text-align: right;
+      color: #aaaaaa;
+      font-weight: 100;
+      font-size: 16px;
+      letter-spacing: 1px;
+    }
+    .artist__header .artist__listeners__label {
+      font-weight: 300;
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+    .artist__header .artist__navigation {
+      width: 100%;
+      z-index: 1;
+      background: rgba(24, 24, 24, 0.6);
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .artist__header .artist__navigation ul {
+      border: none;
+    }
+    .artist__header .artist__navigation ul li {
+      padding: 0 15px;
+    }
+    .artist__header .artist__navigation ul li a {
+      padding: 15px 0;
+      color: #aaaaaa;
+      border: none;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.4s ease;
+      border-bottom: 4px solid rgba(0, 0, 0, 0);
+    }
+    .artist__header .artist__navigation ul li a:hover {
+      background: none;
+      border: none;
+      color: white;
+      transition: all 0.4s ease;
+      border-bottom: 4px solid rgba(0, 0, 0, 0);
+    }
+    .artist__header .artist__navigation ul li.active a {
+      color: white;
+      background: none;
+      border: none;
+      border-bottom: 4px solid #1ed760;
+    }
+    .artist__header .artist__navigation ul li.active a:hover {
+      border-bottom: 4px solid #1ed760;
+    }
+    .artist__content {
+      padding: 15px;
+    }
+    .artist__content .overview {
+      display: flex;
+      flex-flow: row wrap;
+    }
+    .artist__content .overview__artist {
+      padding-right: 15px;
+      width: 70%;
+    }
+    .artist__content .overview__artist .latest-release {
+      margin-bottom: 30px;
+      display: flex;
+      flex-flow: row wrap;
+    }
+    .artist__content .overview__artist .latest-release__art {
+      width: 75px;
+    }
+    .artist__content .overview__artist .latest-release__art img {
+      width: 75px;
+      height: 75px;
+    }
+    .artist__content .overview__artist .latest-release__song {
+      width: calc(100% - 75px);
+      padding: 10px 15px;
+      background: #282828;
+      color: #aaaaaa;
+      display: flex;
+      flex-flow: column wrap;
+      justify-content: space-between;
+    }
+    .artist__content .overview__artist .latest-release__song__title {
+      color: #c8c8c8;
+    }
+    .artist__content .overview__related {
+      width: 30%;
+    }
+    @media (max-width: 1024px) {
+      .artist__content .overview__artist {
+        width: 100%;
+      }
+      .artist__content .overview__related {
+        width: 100%;
+        margin-top: 15px;
+      }
+    }
+    @media (max-width: 768px) {
+      .artist__content .overview__artist {
+        padding-right: 0;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .artist {
+        overflow-y: auto;
+      }
+    }
+    @media (max-width: 522px) {
+      .artist__header {
+        height: auto;
+        flex-flow: column wrap;
+      }
+      .artist__header .artist__info {
+        margin-top: 0;
+        width: 100%;
+        display: flex;
+        flex-flow: column wrap;
+        align-items: center;
+        text-align: center;
+      }
+      .artist__header .artist__info .profile__img {
+        margin-right: 0;
+      }
+      .artist__header .artist__info__type {
+        margin-top: 10px;
+      }
+      .artist__header .artist__listeners {
+        width: 100%;
+        text-align: center;
+      }
+    }
+    #artist-about {
+      font-family: "Roboto", sans-serif;
+      font-size: 14px;
+      color: #aaaaaa;
+    }
+    .tracks {
+      display: flex;
+      flex-flow: column wrap;
+      margin-bottom: 15px;
+    }
+    .tracks__heading {
+      color: #aaaaaa;
+      height: 42px;
+      display: flex;
+      flex-flow: row wrap;
+      align-items: center;
+    }
+    .tracks__heading__number {
+      margin-left: 10px;
+      font-style: italic;
+    }
+    .tracks__heading__title {
+      margin-left: 70px;
+      width: 45%;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .tracks__heading__length {
+      margin-left: auto;
+      font-size: 20px;
+    }
+    .tracks__heading__popularity {
+      font-size: 20px;
+      margin-left: 55px;
+      padding-right: 10px;
+    }
+    .tracks .track {
+      border-top: 1px solid #282828;
+      height: 42px;
+      display: flex;
+      flex-flow: row wrap;
+      align-items: center;
+    }
+    .tracks .track:hover {
+      background: #282828;
+    }
+    .tracks .track:last-child {
+      border-bottom: 1px solid #282828;
+    }
+    .tracks .track__art img {
+      width: 42px;
+      height: 42px;
+    }
+    .tracks .track__number {
+      margin-left: 10px;
+      color: #aaaaaa;
+      width: 12px;
+    }
+    .tracks .track__added {
+      margin-left: 30px;
+      color: #c8c8c8;
+    }
+    .tracks .track__added .added {
+      color: #c8c8c8;
+    }
+    .tracks .track__added .not-added {
+      color: #aaaaaa;
+    }
+    .tracks .track__title {
+      cursor: pointer;
+      width: 45%;
+      margin-left: 30px;
+      color: white;
+    }
+    /* .tracks .track__title.featured .title:after {
+      content: "-";
+      margin: 0 5px;
+    } */
+    .tracks .track__title.featured .feature {
+      color: #aaaaaa;
+    }
+    .tracks .track__title.featured .feature:after {
+      content: ",";
+      margin-right: 5px;
+    }
+    .tracks .track__title.featured .feature:last-child:after {
+      content: "";
+      margin-right: 0;
+    }
+    .tracks .track__title.featured .feature:hover {
+      cursor: pointer;
+      color: #c8c8c8;
+      text-decoration: underline;
+    }
+    .tracks .track__explicit .label {
+      border: 1px;
+      border-style: solid;
+      border-color: #424242;
+      color: #424242;
+      text-transform: uppercase;
+    }
+    .tracks .track__plays {
+      color: #aaaaaa;
+      margin-left: auto;
+      padding-right: 10px;
+    }
+    .tracks .track__length {
+      margin-left: auto;
+      color: #aaaaaa;
+    }
+    .tracks .track__popularity {
+      margin-left: 46px;
+      padding-right: 10px;
+      font-size: 20px;
+      color: #aaaaaa;
+    }
+
+    @media (max-width: 1200px) {
+      .tracks__heading__title {
+        width: auto;
+      }
+      .tracks__heading__popularity {
+        display: none;
+      }
+      .tracks .track__title {
+        width: auto !important;
+      }
+      .tracks .track__explicit {
+        display: none;
+      }
+      .tracks .track__popularity {
+        display: none;
+      }
+    }
+    .overview__albums {
+      width: 100%;
+      margin-top: 30px;
+    }
+    .overview__albums__head {
+      border-bottom: 1px solid #282828;
+      margin-bottom: 10px;
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .overview__albums__head .view-type {
+      color: white;
+      margin-bottom: 4px;
+    }
+    .overview__albums__head .view-type .active {
+      background: #282828;
+      padding: 8px;
+      border-radius: 50%;
+    }
+    .overview__albums__head .view-type i {
+      padding: 8px;
+      border-radius: 50%;
+    }
+    .overview__albums__head .view-type i:hover {
+      padding: 8px;
+      border-radius: 50%;
+      background: #353535;
+      cursor: pointer;
+    }
+
+    .album__info {
+      margin-bottom: 15px;
+      display: flex;
+      flex-flow: row wrap;
+    }
+    .album__info__art img {
+      width: 135px;
+      height: 135px;
+    }
+    .album__info__meta {
+      width: calc(100% - 150px);
+      margin-left: 15px;
+      display: flex;
+      flex-flow: column wrap;
+    }
+    .album__info__meta .album__year {
+      color: #aaaaaa;
+      letter-spacing: 1px;
+    }
+    .album__info__meta .album__name {
+      font-family: spotify-circular;
+      color: white;
+      font-size: 30px;
+      font-weight: 100;
+    }
+    .album .track__title {
+      width: 70%;
+    }
+
+    @media (max-width: 1200px) {
+      .album .tracks .track {
+        height: auto;
+        padding: 10px 0;
+      }
+    }
+    .social {
+      padding: 15px;
+      text-align: center;
+      overflow-y: scroll;
+    }
+    .social .friends {
+      display: flex;
+      flex-flow: column wrap;
+      margin-bottom: 15px;
+    }
+    .social .friends .friend {
+      padding: 15px 0;
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+    }
+    .social .friends .friend:first-child {
+      padding-top: 0;
+    }
+    .social .friends .friend i {
+      font-size: 20px;
+      margin-right: 15px;
+    }
+
+    .media-cards {
+      display: flex;
+      flex-flow: row wrap;
+    }
+    .media-cards .media-card {
+      margin: 15px;
+      width: calc((100% / 4) - 30px);
+    }
+    .media-cards .media-card__image {
+      height: 200px;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+      display: flex;
+      align-items: center;
+    }
+    .media-cards .media-card__image i {
+      color: white;
+      font-size: 72px;
+      margin: 0 auto;
+      opacity: 0;
+      transition: all 0.5s ease;
+      text-shadow: 1px 5px 15px #181818;
+    }
+    .media-cards .media-card__image i:hover {
+      cursor: pointer;
+    }
+    .media-cards .media-card__image:hover i {
+      opacity: 1;
+      transition: all 0.5s ease;
+    }
+    .media-cards .media-card__footer {
+      display: block;
+      background: #282828;
+      padding: 15px;
+      color: white;
+    }
+    .media-cards .media-card__footer:hover {
+      cursor: pointer;
+    }
+
+    @media (max-width: 1100px) {
+      .media-cards .media-card {
+        width: calc((100% / 3) - 30px);
+      }
+    }
+    @media (max-width: 768px) {
+      .media-cards .media-card {
+        width: calc((100% / 2) - 30px);
+      }
+    }
+    @media (max-width: 480px) {
+      .media-cards .media-card {
+        margin: 15px 0;
+        width: 100%;
+      }
+    }
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      border-radius: 4px;
+      background: #373737;
+    }
+
+    @media (max-width: 650px) {
+      .header .window__actions {
+        width: 15%;
+      }
+      .header .page-flows {
+        width: 20%;
+        margin: 0;
+      }
+      .header .search {
+        width: 65%;
+        margin: 0;
+      }
+      .header .search input {
+        width: 100%;
+        background-size: 7%;
+      }
+      .header .user {
+        width: 100%;
+        margin-top: 15px;
+        justify-content: end;
+      }
+    }
+    .h1 {
+      font-size: 36px;
+    }
+
+    .h2 {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 5px;
+    }
+
+    .red {
+      color: #fc615c;
+    }
+    .red:hover {
+      color: #fb302a;
+    }
+
+    .green {
+      color: #34c94a;
+    }
+    .green:hover {
+      color: #2aa03b;
+    }
+
+    button {
+      border-radius: 20px;
+      border: none;
+      padding: 5px 15px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 11px;
+      outline: none;
+    }
+    button:hover {
+      cursor: pointer;
+    }
+
+    .button-dark {
+      background: #1ed760;
+      color: white;
+      border: 1px solid #1ed760;
+    }
+    .button-dark:hover {
+      background: #43e57d;
+    }
+
+    .button-light {
+      background: none;
+      color: #c8c8c8;
+      border: 1px solid #c8c8c8;
+    }
+    .button-light:hover {
+      border-color: white;
+      color: white;
+    }
+
+    .section-title {
+      text-transform: uppercase;
+      color: #aaaaaa;
+      letter-spacing: 1.25px;
+      font-size: 13.2px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <section class="content">
+    <div class="content__middle">
+      <div class="artist">
+        <div class="artist__header">
+          <div class="artist__info">
+            <div class="artist__info__meta">
+              <div class="artist__info__name">Shreya Bhat</div>
+
+              <div class="artist__info__actions">
+                <span class="amplitude-play">
+                  <button class="button-dark">
+                    <i class="ion-ios-play"></i>
+                    Play
+                  </button>
+                </span>
+
+                <button class="button-light">Following</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="artist__listeners">
+            <div class="artist__listeners__count">15,662,810</div>
+
+            <div class="artist__listeners__label">Monthly Listeners</div>
+          </div>
+
+          <div class="artist__navigation">
+            <ul class="nav nav-tabs" role="tablist">
+              <li role="presentation" class="active">
+                <a
+                  href="#artist-overview"
+                  aria-controls="artist-overview"
+                  role="tab"
+                  data-toggle="tab"
+                  >Overview</a
+                >
+              </li>
+
+              <li role="presentation">
+                <a
+                  href="#artist-about"
+                  aria-controls="artist-about"
+                  role="tab"
+                  data-toggle="tab"
+                  >About</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="artist__content">
+          <div class="tab-content">
+            <!-- Overview -->
+            <div role="tabpanel" class="tab-pane active" id="artist-overview">
+              <div class="overview">
+                <div class="overview__albums">
+                  <div class="overview__albums__head">
+                    <span class="section-title">Albums</span>
+                  </div>
+
+                  <div class="album">
+                    <div class="album__info">
+                      <div class="album__info__art">
+                        <img
+                          src="/birthday-letters/shre/2020/shre_album_art.jpg"
+                          alt=" "
+                        />
+                      </div>
+
+                      <div class="album__info__meta">
+                        <div class="album__year">2020</div>
+
+                        <div class="album__name">Happy Birthday!</div>
+                      </div>
+                    </div>
+
+                    <div class="album__tracks">
+                      <div id="tracks" class="tracks">
+                        <div class="tracks__heading">
+                          <div class="tracks__heading__number">#</div>
+
+                          <div class="tracks__heading__title">Song</div>
+
+                          <div class="tracks__heading__length">
+                            <i class="ion-ios-stopwatch-outline"></i>
+                          </div>
+
+                          <div class="tracks__heading__popularity">
+                            <i class="ion-thumbsup"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- About // Coming Soon-->
+            <div role="tabpanel" class="tab-pane" id="artist-about">
+              <!-- About -->
+              <p>
+                Shreya Bhat (Sshreya Yajanakumara) was born on 16th February,
+                1998 and the world has been a better place ever since.
+              </p>
+              <p>Happy birthday Shre!</p>
+              <p>
+                I love your singing. I see the joy it brings you and I'm always
+                in awe of your voice. One day I do wish this page could become a
+                real thing, but until that day, this small gift is just a way of
+                me appreciating you.<br />
+                And now a message from one of your fans
+                <br />
+                <br />
+                
+                <q
+                  >Dear favourite senior, Happiest birthday. I hope you have a
+                  beautiful year ahead. I miss us walking and ranting. Can’t
+                  wait to see you soon and chill!
+                </q>
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+              </p>
+              <br />
+            </div>
+            <!-- / -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="current-track">
+    <div class="current-track__actions">
+      <span class="amplitude-prev">
+        <a class="ion-ios-skipbackward"></a>
+      </span>
+
+      <span class="amplitude-play"> <a class="ion-ios-play play"></a> </span>
+      <span class="amplitude-pause"> <a class="ion-ios-pause pause"></a> </span>
+
+      <span class="amplitude-next">
+        <a class="ion-ios-skipforward"></a>
+      </span>
+    </div>
+
+    <div class="current-track__progress">
+      <div class="current-track__progress__start amplitude-current-time"></div>
+
+      <div class="current-track__progress__bar">
+        <input type="range" class="amplitude-song-slider" step=".1" />
+        <!-- <div id="song-progress"></div> -->
+      </div>
+
+      <div
+        class="current-track__progress__finish amplitude-duration-time"
+      ></div>
+    </div>
+
+    <div class="current-track__options">
+      <span class="controls">
+        <a href="#" class="control">
+          <i class="ion-navicon"></i>
+        </a>
+
+        <span class="amplitude-shuffle">
+          <a href="#" class="control">
+            <i class="ion-shuffle"></i>
+          </a>
+        </span>
+      </span>
+    </div>
+  </footer>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/amplitudejs@5.0.3/dist/amplitude.min.js"></script>
+  <script>
+    let tracks = document.getElementById("tracks");
+    let songs = [
+      {
+        name: "Shape of You",
+        url: "/birthday-letters/shre/2020/shape_of_you.aac",
+        features: "ft. Ed Sheeran",
+        time: "01:02"
+      },
+      {
+        name: "Ennavale Adi Ennavale",
+        url: "/birthday-letters/shre/2020/Ennavale_Adi_Ennavale.aac",
+        features: "ft. Unni Krishnan",
+        time: "00:58"
+      },
+      {
+        name: "En Kadhale",
+        url: "/birthday-letters/shre/2020/en_kadhale.aac",
+        features: "ft. A. R. Rahman",
+        time: "00:58"
+      },
+      {
+        name: "Vaseegara",
+        url: "/birthday-letters/shre/2020/vaseegara.mp3",
+        features: "ft. Harris Jayaraj",
+        time: "02:16"
+      },
+      {
+        name: "Munjaale Manjalli",
+        url: "/birthday-letters/shre/2020/munjaale_manjalli.mp3",
+        features: "ft. Raghu Dixit",
+        time: "01:46"
+      }
+    ];
+    songs.forEach((song, index) => {
+      // <span class="feature">${song.features}</span>
+      let track = document.createElement("div");
+      track.classList.add("track");
+      track.innerHTML = `
+      <div class="track__number">${index + 1}</div>
+      <div class="track__added">
+        <i class="ion-checkmark-round added"></i>
+      </div>
+      <div class="track__title featured">
+        <span class="title amplitude-play" data-amplitude-song-index="${index}">
+          ${song.name}
+        </span>
+        
+      </div>
+                          <!-- <div class="track__explicit">
+                            <span class="label">Explicit</span>
+                          </div> -->
+      <div class="track__length">${song.time}</div>
+      <div class="track__popularity">
+        <i class="ion-arrow-graph-up-right"></i>
+      </div>
+      `;
+      tracks.appendChild(track);
+    });
+
+    // Load songs
+
+    Amplitude.init({ songs });
+
+    // // Viewport Heights
+
+    $(window).on("load", function() {
+      var totalHeight = $(window).height();
+
+      var headerHeight = $(".header").outerHeight();
+      var footerHeight = $(".current-track").outerHeight();
+      var playlistHeight = $(".playlist").outerHeight();
+      var nowPlaying = $(".playing").outerHeight();
+
+      var navHeight =
+        totalHeight -
+        (headerHeight + footerHeight + playlistHeight + nowPlaying);
+      var artistHeight = totalHeight - (headerHeight + footerHeight);
+
+      $(".navigation").css("height", navHeight);
+      $(".artist").css("height", artistHeight);
+      $(".social").css("height", artistHeight);
+      if ($(window).width() <= 768) {
+        $(".collapse").removeClass("in");
+
+        $(".navigation").css("height", "auto");
+
+        $(".artist").css("height", "auto");
+      } else {
+        $(".collapse").addClass("in");
+      }
+    });
+  </script>
+</body>
