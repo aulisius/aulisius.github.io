@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Md Faizaan - Getting type of interface members in Typescript</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="../css/post.css" />
+  </head>
+  <body>
+    <header>
+      <h2><a href="../">Md Faizaan</a></h2>
+      <aside>Typescript Adventures #1</aside>
+      <br />
+      <i>Written and published on 15th Feb, 2021</i>
+    </header>
+    <hr />
+    <p>
+      I recently came across a small requirement while adding types to a
+      particular component. Consider the following type
+    </p>
+    <pre>
+interface OrderDetails {
+  createdDt: string;
+  updatedDt: string;
+  currentStatus: "Active" | "InActive" | "Deleted"
+}</pre
+    >
+    <p>
+      I need to show a list of them in a paginated manner and also provide
+      filters to view a subset of them. <br />
+      In this case, the filter would be on <code>currentStatus</code>. The type
+      signature of my list was,
+    </p>
+    <pre>
+type List = {
+  orders: OrderDetails[];
+  activeStatus: string;
+}</pre
+    >
+
+    <p>
+      Naturally <code>activeStatus</code> is kept as a string, but I'd like to
+      go one step further and see if I can make sure that
+      <code>activeStatus</code> can only be one of
+      <code>"Active" | "InActive" | "Deleted"</code>.
+    </p>
+    <p>
+      At this point, there are two approaches to solving this requirement. One
+      would be to create a new type for <code>currentStatus</code>.
+    </p>
+    <pre>
+type OrderStatus = "Active" | "InActive" | "Deleted";
+interface OrderDetails {
+  createdDt: string;
+  updatedDt: string;
+  currentStatus: OrderStatus;
+}
+type List = {
+  orders: OrderDetails[];
+  activeStatus: OrderStatus;
+}</pre
+    >
+    <p>
+      The above solution works wonderfully well if <code>OrderDetails</code> was
+      a self-defined type but in this case, this came from a dependency that I
+      had little control over.
+    </p>
+
+    <p>
+      The other approach is to extract the type of
+      <code>OrderDetails.currentStatus</code> and assign it wherever needed.
+    </p>
+    <pre>
+interface OrderDetails {
+  createdDt: string;
+  updatedDt: string;
+  currentStatus: "Active" | "InActive" | "Deleted";
+}
+type List = {
+  orders: OrderDetails[];
+  activeStatus: OrderDetails.currentStatus;
+}</pre
+    >
+    <p>
+      On surface this sounds like it would work, but sadly Typescript bugs out.
+      I haven't fully investigated the reason, <br />
+      but an educated guess is that this collides with parsing of
+      <code>Namespace.Type</code> and hence TS disallows accessing members here.
+    </p>
+    <p>So then, what next?</p>
+    <p>
+      Thankfully, Typescript understands what I'm trying to do and shows an
+      helpful error message
+    </p>
+    <code>
+      Cannot access <b>'OrderDetails.currentStatus'</b> because 'OrderDetails'
+      is a type, but not a namespace. Did you mean to retrieve the type of the
+      property 'currentStatus' in 'OrderDetails' with
+      <b>'OrderDetails["currentStatus"]'</b>?
+    </code>
+
+    <p>Once you apply the suggested fix,</p>
+
+    <pre>
+interface OrderDetails {
+  createdDt: string;
+  updatedDt: string;
+  currentStatus: "Active" | "InActive" | "Deleted";
+}
+type List = {
+  orders: OrderDetails[];
+  activeStatus: OrderDetails["currentStatus"];
+}
+</pre
+    >
+
+    <p>
+      Now with this, I am confident that I won't end up with a wrong value or a
+      typo when using <code>activeStatus</code>.
+    </p>
+
+    <p>
+      You can play around the code shown here on the
+      <a
+        class="link"
+        href="https://www.typescriptlang.org/play?#code/JYOwLgpgTgZghgYwgAgPJQCbQCITHYAGwGdkBvAWAChlkEoI5INswAuZYsKUAcwG5qtAK4AHDEwgt2nbn0E06wqA3ABlfGGHEOAIgCCCMMABuEXcgA+yXQEkQh42YvXduQnim6FAX2pgAT1EUABlgLmQAXnIhZAB7TGgdNESoXHwiYgBtAF0FWkQnCA0mbQ50LDS8AhIs3QRlVTASrWJdPOo-KmoPMGRCcJkwiOiyBMrk3IAaZELTYs0ym0d53R8FHsGAOjmzFu0omwAlOBAMOIBbb2pqIA"
+        >Typescript Playground</a
+      >.
+    </p>
+    <h2><a href="../">Back</a></h2>
+  </body>
+</html>
